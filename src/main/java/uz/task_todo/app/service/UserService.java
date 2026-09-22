@@ -10,6 +10,8 @@ import java.util.List;
 
 @Service
 public class UserService {
+    //mapper,validation,dao classlarni inject qilish
+
     public Long createUser(UserCreateDto dto) {
         return null;
     }
