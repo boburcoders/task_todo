@@ -20,7 +20,7 @@ public class TaskHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "taskId", nullable = false)
     private Task task;
-    @Column(insertable = false, name = "taskId")
+    @Column(insertable = false, updatable = false, name = "taskId")
     private Long taskId;
 
     private TaskStatus oldStatus;

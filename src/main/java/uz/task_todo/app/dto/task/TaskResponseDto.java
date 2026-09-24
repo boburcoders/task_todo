@@ -6,8 +6,10 @@ public record TaskResponseDto(
         Long id,
         String title,
         String description,
-        String status,
+        uz.task_todo.app.models.enums.TaskStatus status,
         Long userId,
+        Long ownerId,
         LocalDateTime deadline,
         LocalDateTime createdAt) {
+
 }

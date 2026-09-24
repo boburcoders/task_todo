@@ -22,6 +22,7 @@ public class Users {
     private String email;
     private String password;
     private String phone;
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     private LocalDateTime createdAt;

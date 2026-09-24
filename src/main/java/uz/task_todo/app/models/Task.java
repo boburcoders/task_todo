@@ -1,12 +1,12 @@
 package uz.task_todo.app.models;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import uz.task_todo.app.models.enums.TaskStatus;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
@@ -28,9 +28,9 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private Users user;
+    private uz.task_todo.app.models.Users user;
 
-    @Column(insertable = false, name = "userId")
+    @Column(insertable = false, updatable = false, name = "userId")
     private Long userId;
 
     @Column(nullable = false)
@@ -42,5 +42,7 @@ public class Task {
     private LocalDateTime updatedAt;
 
     private Boolean deleted;
+
+    private Long ownerId;
 
 }

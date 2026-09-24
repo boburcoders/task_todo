@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.task_todo.app.dto.task.TaskCreateDto;
+import uz.task_todo.app.dto.task.TaskCreateTaskRespDto;
 import uz.task_todo.app.dto.task.TaskResponseDto;
 import uz.task_todo.app.dto.task.TaskUpdateDto;
 import uz.task_todo.app.service.TaskService;
@@ -17,9 +18,9 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("/create-task")
-    public ResponseEntity<Long> createTask(@RequestBody TaskCreateDto dto) {
-        Long taskId = taskService.createTask(dto);
-        return ResponseEntity.ok(taskId);
+    public ResponseEntity<TaskCreateTaskRespDto> createTask(@RequestBody TaskCreateDto dto) {
+        TaskCreateTaskRespDto responseDto = taskService.createTask(dto);
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/get-taskById/{id}")
