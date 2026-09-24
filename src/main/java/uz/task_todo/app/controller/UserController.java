@@ -3,10 +3,7 @@ package uz.task_todo.app.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.task_todo.app.dto.user.UserCreateDto;
-import uz.task_todo.app.dto.user.UserResponseDto;
-import uz.task_todo.app.dto.user.UserShortInfo;
-import uz.task_todo.app.dto.user.UserUpdateRequestDto;
+import uz.task_todo.app.dto.user.*;
 import uz.task_todo.app.service.UserService;
 
 import java.util.List;
@@ -18,8 +15,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/create-user")
-    public ResponseEntity<Long> createUser(@RequestBody UserCreateDto dto) {
-        Long id = userService.createUser(dto);
+    public ResponseEntity<UserReturnIDForCreateDto> createUser(@RequestBody UserCreateDto dto) {
+        UserReturnIDForCreateDto id = userService.createUser(dto);
         return ResponseEntity.ok(id);
     }
 

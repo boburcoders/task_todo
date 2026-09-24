@@ -6,5 +6,6 @@ public record UserCreateDto(
         String email,
         String password,
         String phone,
-        String role) {
+        String role,
+        String ownerId) {
 }

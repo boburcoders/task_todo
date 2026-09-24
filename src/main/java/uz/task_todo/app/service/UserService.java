@@ -1,28 +1,58 @@
 package uz.task_todo.app.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.task_todo.app.dto.user.UserCreateDto;
-import uz.task_todo.app.dto.user.UserResponseDto;
-import uz.task_todo.app.dto.user.UserShortInfo;
-import uz.task_todo.app.dto.user.UserUpdateRequestDto;
+import uz.task_todo.app.dao.UserDao;
+import uz.task_todo.app.dto.user.*;
+import uz.task_todo.app.models.Users;
+import uz.task_todo.app.models.enums.UserRole;
+import uz.task_todo.app.service.mapper.UserMapperToObject;
+import uz.task_todo.app.service.mapper.UserMapperToResponse;
+import uz.task_todo.app.service.validation.UserValidation;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    public Long createUser(UserCreateDto dto) {
-        return null;
+    private final UserDao userDao;
+    private final UserMapperToObject userMapperToObject;
+    private final UserMapperToResponse userMapperToResponse;
+    private final UserValidation userValidation;
+
+    public UserReturnIDForCreateDto createUser(UserCreateDto dto) {
+        UserReturnIDForCreateDto mapper = null;
+        Users entity = userMapperToObject.toEntity(dto);
+        String hasParamAdminId = userValidation.hasParamAdminId(entity.getOwnerId());
+        if (hasParamAdminId == null) {
+        Users save_result = userDao.save(entity);
+        mapper = userMapperToResponse.toDtoForId(save_result);
+        }
+        else {
+            System.out.println(hasParamAdminId);
+        }
+        return mapper;
     }
 
     public UserResponseDto getUserById(Long id) {
-        return null;
+        Users byIdUser = userDao.findByUserId(id);
+        UserResponseDto userResponseDto = userMapperToResponse.toDto(byIdUser);
+        return userResponseDto;
     }
 
     public List<UserShortInfo> getAllUserWithShortInfo() {
-        return null;
+        List<Users> userAll = userDao.findAll();
+        List<UserShortInfo> userShortInfo = userAll.stream().map(userMapperToResponse :: toDtoForShortInfo).toList();
+        return userShortInfo;
+
     }
 
     public Long updateUserById(Long userId, UserUpdateRequestDto dto) {
+
+        Users entity = userMapperToObject.toUpdateuser(dto);
+        userValidation.checkParametrUpdate(entity);
+        userDao.updateUser(userId,entity.getFirstname(),entity.getLastname(),
+                entity.getEmail(), entity.getPassword(), entity.getRole(), entity.getOwnerId());
         return null;
     }
 

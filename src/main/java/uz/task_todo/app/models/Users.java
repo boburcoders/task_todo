@@ -2,6 +2,7 @@ package uz.task_todo.app.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import uz.task_todo.app.models.enums.UserRole;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,9 @@ public class Users {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    private String ownerId;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean deleted;
