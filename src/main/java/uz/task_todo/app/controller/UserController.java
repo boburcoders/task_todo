@@ -3,6 +3,7 @@ package uz.task_todo.app.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.task_todo.app.dto.BaseResponse;
 import uz.task_todo.app.dto.user.*;
 import uz.task_todo.app.service.UserService;
 
@@ -15,15 +16,18 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/create-user")
+    //@PreAutharize("hasRole('ADMIN')")
     public ResponseEntity<UserReturnIDForCreateDto> createUser(@RequestBody UserCreateDto dto) {
         UserReturnIDForCreateDto id = userService.createUser(dto);
         return ResponseEntity.ok(id);
     }
 
     @GetMapping("/get-byId/{id}")
-    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<BaseResponse<UserResponseDto>> getUserById(@PathVariable Long id) {
         UserResponseDto res = userService.getUserById(id);
-        return ResponseEntity.ok(res);
+
+
+        return ResponseEntity.ok(BaseResponse.success("Ok", res));
     }
 
     @GetMapping("/get-all")
@@ -53,10 +57,11 @@ public class UserController {
     }
 
     @PutMapping("/delete-byId/{id}")
-    public ResponseEntity<Boolean> deleteUserById(
+    public ResponseEntity<BaseResponse<Boolean>> deleteUserById(
             @PathVariable("id") Long userId) {
 
         Boolean deleted = userService.deleteUserById(userId);
-        return ResponseEntity.ok(deleted);
+
+        return ResponseEntity.ok(BaseResponse.success("User deleted successfully", deleted));
     }
 }

@@ -4,9 +4,6 @@ public record UserUpdateRequestDto(
         String firstname,
         String lastname,
         String email,
-        String password,
-        String phone,
-        String role,
-        String ownerId
+        String phone
 ) {
 }
