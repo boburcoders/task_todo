@@ -1,12 +1,41 @@
 package uz.task_todo.app.service.mapper;
 
 import org.springframework.stereotype.Component;
-import uz.task_todo.app.dto.user.UserResponseDto;
-import uz.task_todo.app.dto.user.UserReturnIDForCreateDto;
-import uz.task_todo.app.dto.user.UserShortInfo;
+import uz.task_todo.app.dto.user.*;
 import uz.task_todo.app.models.Users;
+import uz.task_todo.app.models.enums.UserRole;
+
 @Component
-public class UserMapperToResponse {
+public class UserMapper {
+
+    public Users toEntity(UserCreateDto dto) {
+        Users user = new Users();
+        user.setFirstname(dto.firstname());
+        user.setLastname(dto.lastname());
+        user.setEmail(dto.email());
+        user.setPassword(dto.password());
+        user.setPhone(dto.phone());
+        user.setRole(UserRole.valueOf(dto.role().toUpperCase()));
+        user.setOwnerId(dto.ownerId());
+        return user;
+    }
+
+    public Users toUpdateuser(Users user, UserUpdateRequestDto dto) {
+        if (dto.firstname() != null) {
+            user.setFirstname(dto.firstname());
+        }
+        if (dto.lastname() != null) {
+            user.setLastname(dto.lastname());
+        }
+        if (dto.email() != null) {
+            user.setEmail(dto.email());
+        }
+        if (dto.phone() != null) {
+            user.setPhone(dto.phone());
+        }
+        return user;
+    }
+
     public UserResponseDto toDto(Users entity) {
         /*
         * Long id,
@@ -24,13 +53,15 @@ public class UserMapperToResponse {
                 entity.getPhone(),
                 entity.getPhone(),
                 entity.getCreatedAt()
-                );
+        );
         return userResponseDto;
     }
+
     public UserReturnIDForCreateDto toDtoForId(Users dto) {
         return new UserReturnIDForCreateDto(dto.getId());
     }
-    public UserShortInfo  toDtoForShortInfo(Users dto) {
+
+    public UserShortInfo toDtoForShortInfo(Users dto) {
         /*Long id,
         String firstname,
         String lastname,
@@ -38,4 +69,5 @@ public class UserMapperToResponse {
         String phone*/
         return new UserShortInfo(dto.getId(), dto.getFirstname(), dto.getLastname(), dto.getEmail(), dto.getPhone());
     }
+
 }

@@ -22,7 +22,7 @@ public interface TaskDao extends JpaRepository<Task, Long> {
      Long userId,
      LocalDateTime deadline,
      LocalDateTime createdAt)*/
-    @Query("""
+    @Query(value = """
             select t from Task t where t.id=:id
             """)
     Task getById(@Param("id") Long id);

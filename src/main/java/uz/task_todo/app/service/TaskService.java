@@ -12,28 +12,25 @@ import uz.task_todo.app.dto.task.TaskUpdateDto;
 import uz.task_todo.app.models.Task;
 import uz.task_todo.app.models.Users;
 import uz.task_todo.app.models.enums.TaskStatus;
-import uz.task_todo.app.service.mapper.TaskMapperToObject;
-import uz.task_todo.app.service.mapper.TaskMapperToResponse;
+import uz.task_todo.app.service.mapper.TaskMapper;
 import uz.task_todo.app.service.validation.TaskValidation;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService {
-    private final TaskMapperToObject taskMapperToObject; // map uchun toEntit(), toDto()
-    private final TaskMapperToResponse taskMapperToResp; // map uchun toEntit(), toDto()
+    private final TaskMapper taskMapper; // map uchun toEntit(), toDto()
     private final TaskValidation taskValidation; //validateRequest();
     private final TaskDao taskDao;
     private final UserDao userDao;
     private final TaskHistoryService taskHistoryService;
 
     public TaskCreateTaskRespDto createTask(TaskCreateDto dto) {
-        Task entityCreate = taskMapperToObject.toEntity(dto);
+        Task entityCreate = taskMapper.toEntity(dto);
         Task result_save = taskDao.save(entityCreate);
-        TaskCreateTaskRespDto save_resp = taskMapperToResp.toRespCreateUser(result_save);
+        TaskCreateTaskRespDto save_resp = taskMapper.toRespCreateUser(result_save);
         //System.out.println("save_resp = " + save_resp);
         //Long save_id = result_save.getId();
         return save_resp;
@@ -41,7 +38,7 @@ public class TaskService {
 
     public TaskResponseDto getTaskById(Long id) {
         Task respById = taskDao.getById(id);
-        TaskResponseDto respTaskById = taskMapperToResp.toRespTaskById(respById);
+        TaskResponseDto respTaskById = taskMapper.toRespTaskById(respById);
 
         return respTaskById;
     }
@@ -49,21 +46,21 @@ public class TaskService {
     public List<TaskResponseDto> getTaskByUserId(Long userId) {
         List<Task> respByUserId = taskDao.getfindByUserId(userId);
         List<TaskResponseDto> respTaskByUserId =
-                respByUserId.stream().map(taskMapperToResp::toRespTaskById).toList();
+                respByUserId.stream().map(taskMapper::toRespTaskById).toList();
         System.out.println(respTaskByUserId);
         return respTaskByUserId;
     }
 
     public List<TaskResponseDto> getAllTask() {
         List<Task> respByUserId = taskDao.findAll();
-        List<TaskResponseDto> respTaskByUserId = respByUserId.stream().map(taskMapperToResp::toRespTaskById).toList();
+        List<TaskResponseDto> respTaskByUserId = respByUserId.stream().map(taskMapper::toRespTaskById).toList();
         System.out.println(respTaskByUserId);
         return respTaskByUserId;
     }
 
     public List<TaskResponseDto> getTaskByStatus(String status) {
         List<Task> respByUserId = taskDao.getfindByStatus(TaskStatus.valueOf(status.toUpperCase()));
-        List<TaskResponseDto> respTaskByUserId = respByUserId.stream().map(taskMapperToResp::toRespTaskById).toList();
+        List<TaskResponseDto> respTaskByUserId = respByUserId.stream().map(taskMapper::toRespTaskById).toList();
         System.out.println(respTaskByUserId);
         return respTaskByUserId;
     }
@@ -73,7 +70,7 @@ public class TaskService {
         if (task.isEmpty()) {
             throw new EntityNotFoundException("Task not found");
         }
-        Task updatedTask = taskMapperToObject.updateTask(task.get(), dto);
+        Task updatedTask = taskMapper.updateTask(task.get(), dto);
 
         if (dto.userId() != null) {
             Optional<Users> user = userDao.findById(dto.userId());

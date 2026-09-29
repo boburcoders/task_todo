@@ -1,5 +1,6 @@
 package uz.task_todo.app.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class UserController {
 
     @PostMapping("/create-user")
     //@PreAutharize("hasRole('ADMIN')")
-    public ResponseEntity<UserReturnIDForCreateDto> createUser(@RequestBody UserCreateDto dto) {
+    public ResponseEntity<UserReturnIDForCreateDto> createUser(@RequestBody @Valid UserCreateDto dto) {
         UserReturnIDForCreateDto id = userService.createUser(dto);
         return ResponseEntity.ok(id);
     }

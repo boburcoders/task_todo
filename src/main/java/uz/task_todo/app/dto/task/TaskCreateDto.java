@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public record TaskCreateDto(
         String title,
-        String description,
+        String desc,
         String status,
         Long userId,
         LocalDateTime deadline,
