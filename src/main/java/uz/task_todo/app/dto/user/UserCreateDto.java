@@ -12,6 +12,5 @@ public record UserCreateDto(
         @NotBlank(message = "Password must not be null")
         String password,
         String phone,
-        String role,
-        String ownerId) {
+        String role) {
 }

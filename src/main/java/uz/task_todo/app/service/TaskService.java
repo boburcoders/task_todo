@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import uz.task_todo.app.dao.TaskDao;
 import uz.task_todo.app.dao.UserDao;
 import uz.task_todo.app.dto.task.TaskCreateDto;
-import uz.task_todo.app.dto.task.TaskCreateTaskRespDto;
+import uz.task_todo.app.dto.task.TaskResponseCreateDto;
 import uz.task_todo.app.dto.task.TaskResponseDto;
 import uz.task_todo.app.dto.task.TaskUpdateDto;
 import uz.task_todo.app.models.Task;
@@ -27,13 +27,14 @@ public class TaskService {
     private final UserDao userDao;
     private final TaskHistoryService taskHistoryService;
 
-    public TaskCreateTaskRespDto createTask(TaskCreateDto dto) {
-        Task entityCreate = taskMapper.toEntity(dto);
-        Task result_save = taskDao.save(entityCreate);
-        TaskCreateTaskRespDto save_resp = taskMapper.toRespCreateUser(result_save);
+    public TaskResponseCreateDto createTask(TaskCreateDto dto) {
+        taskValidation.validateCreateTaskParametrs(dto);
+        Task entity = taskMapper.toEntity(dto);
+        Task rs = taskDao.save(entity);
+        TaskResponseCreateDto respDto = taskMapper.toRespCreateTask(rs);
         //System.out.println("save_resp = " + save_resp);
         //Long save_id = result_save.getId();
-        return save_resp;
+        return respDto;
     }
 
     public TaskResponseDto getTaskById(Long id) {

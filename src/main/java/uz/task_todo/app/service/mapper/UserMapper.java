@@ -70,4 +70,6 @@ public class UserMapper {
         return new UserShortInfo(dto.getId(), dto.getFirstname(), dto.getLastname(), dto.getEmail(), dto.getPhone());
     }
 
+    public Users toUpdateUserPassword()
+
 }

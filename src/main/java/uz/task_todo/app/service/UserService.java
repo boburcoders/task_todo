@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.task_todo.app.dao.UserDao;
 import uz.task_todo.app.dto.user.*;
+import uz.task_todo.app.exceptions.UserCreateOrUpdateException;
 import uz.task_todo.app.exceptions.UserNotFoundException;
 import uz.task_todo.app.models.Users;
 import uz.task_todo.app.service.mapper.UserMapper;
@@ -18,18 +19,17 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserValidation userValidation;
 
-    public UserReturnIDForCreateDto createUser(UserCreateDto dto) {
+    public UserResponseCreateDto createUser(UserCreateDto dto) throws UserCreateOrUpdateException {
         userValidation.validateUserCreateRequest(dto);
-        UserReturnIDForCreateDto mapper = null;
         Users entity = userMapper.toEntity(dto);
-        String hasParamAdminId = userValidation.hasParamAdminId(entity.getOwnerId());
-        if (hasParamAdminId == null) {
-            Users save_result = userDao.save(entity);
-            mapper = userMapper.toDtoForId(save_result);
-        } else {
-            System.out.println(hasParamAdminId);
+        try {
+
+            Users saveId = userDao.save(entity);
+            UserResponseCreateDto responseCreateDto = new UserResponseCreateDto(saveId.getId());
+            return responseCreateDto;
+        } catch (Exception e){
+            throw new UserCreateOrUpdateException("Error in Creating New User. "+dto.email());
         }
-        return mapper;
     }
 
     public UserResponseDto getUserById(Long id) {
@@ -42,13 +42,19 @@ public class UserService {
     }
 
     public List<UserShortInfo> getAllUserWithShortInfo() {
-        List<Users> userAll = userDao.findAll();
-        List<UserShortInfo> userShortInfo = userAll.stream().map(userMapper::toDtoForShortInfo).toList();
-        return userShortInfo;
-
+        try {
+            List<Users> userAll = userDao.findAll();
+            List<UserShortInfo> userShortInfo = userAll.stream().map(userMapper::toDtoForShortInfo).toList();
+            return userShortInfo;
+        }catch (Exception e){
+            throw new UserNotFoundException("An unknown error occurred while returing all users. ");
+        }
     }
 
     public Long updateUserById(Long userId, UserUpdateRequestDto dto) {
+        if (!userDao.existsById(userId)) {
+            throw new UserNotFoundException("User Not found by userId : "+userId);
+        }
         Users user = userDao.findByUserId(userId);
         Users updatedUser = userMapper.toUpdateuser(user, dto);
         Users save = userDao.save(updatedUser);
@@ -57,10 +63,25 @@ public class UserService {
     }
 
     public Boolean deleteUserById(Long userId) {
-        return null;
+        if (!userDao.existsById(userId)) {
+            throw new UserNotFoundException("User Not found by userId : "+userId);
+        }
+        userDao.deleteById(userId);
+        return true;
     }
 
     public Boolean updatePassword(Long userId, String oldPassword, String newPassword) {
-        return null;
+        if (!userDao.existsById(userId)) {
+            throw new UserNotFoundException("User Not found by userId : "+userId);
+        }
+        Users user = userDao.findByUserId(userId);
+
+        if (!user.getPassword().equals(oldPassword)){
+            throw new UserNotFoundException("Old Password is not correct, please try again");
+        }
+
+        user.setPassword(newPassword);
+        userDao.save(user);
+        return true;
     }
 }

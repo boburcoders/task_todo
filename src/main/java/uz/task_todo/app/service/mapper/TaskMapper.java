@@ -3,6 +3,7 @@ package uz.task_todo.app.service.mapper;
 import org.mapstruct.*;
 import uz.task_todo.app.dto.task.TaskCreateDto;
 import uz.task_todo.app.dto.task.TaskCreateTaskRespDto;
+import uz.task_todo.app.dto.task.TaskResponseCreateDto;
 import uz.task_todo.app.dto.task.TaskResponseDto;
 import uz.task_todo.app.dto.task.TaskUpdateDto;
 import uz.task_todo.app.models.Task;
@@ -33,7 +34,7 @@ public abstract class TaskMapper {
 //        return task;
 //    }
 
-    public abstract TaskCreateTaskRespDto toRespCreateUser(Task task);
+    public abstract TaskResponseCreateDto toRespCreateTask(Task task);
 //    {
 //        return new TaskCreateTaskRespDto(task.getId(), task.getCreatedAt());
 //    }

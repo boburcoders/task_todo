@@ -18,9 +18,9 @@ public class UserController {
 
     @PostMapping("/create-user")
     //@PreAutharize("hasRole('ADMIN')")
-    public ResponseEntity<UserReturnIDForCreateDto> createUser(@RequestBody @Valid UserCreateDto dto) {
-        UserReturnIDForCreateDto id = userService.createUser(dto);
-        return ResponseEntity.ok(id);
+    public ResponseEntity<BaseResponse<UserResponseDto>> createUser(@RequestBody @Valid UserCreateDto dto) {
+        UserResponseDto id = userService.createUser(dto);
+        return ResponseEntity.ok(BaseResponse.success("User Created Successfully",id));
     }
 
     @GetMapping("/get-byId/{id}")
@@ -32,29 +32,29 @@ public class UserController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<UserShortInfo>> getAllUserWithShortInfo() {
+    public ResponseEntity<BaseResponse<List<UserShortInfo>>> getAllUserWithShortInfo() {
         List<UserShortInfo> resList = userService.getAllUserWithShortInfo();
-        return ResponseEntity.ok(resList);
+        return ResponseEntity.ok(BaseResponse.success("All user Find Successfully",resList));
     }
 
     @PutMapping("/update-byId/{id}")
-    public ResponseEntity<Long> updateUserById(
+    public ResponseEntity<BaseResponse<Long>> updateUserById(
             @PathVariable("id") Long userId,
             @RequestBody UserUpdateRequestDto dto) {
 
         Long id = userService.updateUserById(userId, dto);
 
-        return ResponseEntity.ok(id);
+        return ResponseEntity.ok(BaseResponse.success("User Updated Successfully",id));
     }
 
     @PutMapping("/update-password-byId/{id}")
-    public ResponseEntity<Boolean> updatePassword(
+    public ResponseEntity<BaseResponse<Boolean>> updatePassword(
             @PathVariable("id") Long userId,
             @RequestParam String oldPassword,
             @RequestParam String newPassword) {
 
         Boolean updated = userService.updatePassword(userId, oldPassword, newPassword);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(BaseResponse.success("Password Updated Successfully",updated));
     }
 
     @PutMapping("/delete-byId/{id}")
