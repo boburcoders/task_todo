@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.task_todo.app.dto.BaseResponse;
 import uz.task_todo.app.dto.user.*;
+import uz.task_todo.app.exceptions.UserCreateOrUpdateException;
 import uz.task_todo.app.service.UserService;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public class UserController {
 
     @PostMapping("/create-user")
     //@PreAutharize("hasRole('ADMIN')")
-    public ResponseEntity<BaseResponse<UserResponseDto>> createUser(@RequestBody @Valid UserCreateDto dto) {
-        UserResponseDto id = userService.createUser(dto);
+    public ResponseEntity<BaseResponse<UserResponseCreateDto>> createUser(@RequestBody @Valid UserCreateDto dto) throws UserCreateOrUpdateException {
+        UserResponseCreateDto id = userService.createUser(dto);
         return ResponseEntity.ok(BaseResponse.success("User Created Successfully",id));
     }
 

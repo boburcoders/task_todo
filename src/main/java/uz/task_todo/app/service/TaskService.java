@@ -32,7 +32,7 @@ public class TaskService {
         taskValidation.validateCreateTaskParametrs(dto);
         Task entity = taskMapper.toEntity(dto);
         Task rs = taskDao.save(entity);
-        TaskResponseCreateDto respDto = taskMapper.toRespCreateTask(rs);
+        TaskResponseCreateDto respDto = taskMapper.toRespCreateUser(rs);
         //System.out.println("save_resp = " + save_resp);
         //Long save_id = result_save.getId();
         return respDto;
@@ -40,9 +40,8 @@ public class TaskService {
 
     public TaskResponseDto getTaskById(Long id) {
         Task respById = taskDao.getById(id);
-        TaskResponseDto respTaskById = taskMapper.toRespTaskById(respById);
 
-        return respTaskById;
+        return taskMapper.toRespTaskById(respById);
     }
 
     public List<TaskResponseDto> getTaskByUserId(Long userId) {
