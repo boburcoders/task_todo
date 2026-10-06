@@ -2,13 +2,13 @@ package uz.task_todo.app.service.mapper;
 
 import org.mapstruct.*;
 import uz.task_todo.app.dto.task.TaskCreateDto;
-import uz.task_todo.app.dto.task.TaskCreateTaskRespDto;
 import uz.task_todo.app.dto.task.TaskResponseCreateDto;
 import uz.task_todo.app.dto.task.TaskResponseDto;
 import uz.task_todo.app.dto.task.TaskUpdateDto;
 import uz.task_todo.app.models.Task;
 
 import java.util.List;
+
 
 @Mapper(componentModel = "spring")
 public abstract class TaskMapper {

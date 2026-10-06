@@ -16,7 +16,6 @@ public class UserMapper {
         user.setPassword(dto.password());
         user.setPhone(dto.phone());
         user.setRole(UserRole.valueOf(dto.role().toUpperCase()));
-        user.setOwnerId(dto.ownerId());
         return user;
     }
 
@@ -57,9 +56,7 @@ public class UserMapper {
         return userResponseDto;
     }
 
-    public UserReturnIDForCreateDto toDtoForId(Users dto) {
-        return new UserReturnIDForCreateDto(dto.getId());
-    }
+
 
     public UserShortInfo toDtoForShortInfo(Users dto) {
         /*Long id,
@@ -70,6 +67,5 @@ public class UserMapper {
         return new UserShortInfo(dto.getId(), dto.getFirstname(), dto.getLastname(), dto.getEmail(), dto.getPhone());
     }
 
-    public Users toUpdateUserPassword()
 
 }

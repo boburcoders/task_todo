@@ -5,10 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.task_todo.app.dto.BaseResponse;
 import uz.task_todo.app.dto.task.TaskCreateDto;
-import uz.task_todo.app.dto.task.TaskCreateTaskRespDto;
 import uz.task_todo.app.dto.task.TaskResponseCreateDto;
 import uz.task_todo.app.dto.task.TaskResponseDto;
 import uz.task_todo.app.dto.task.TaskUpdateDto;
+import uz.task_todo.app.exceptions.TaskCreateValiditionException;
 import uz.task_todo.app.service.TaskService;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("/create-task")
-    public ResponseEntity<BaseResponse<TaskResponseCreateDto>> createTask(@RequestBody TaskCreateDto dto) {
+    public ResponseEntity<BaseResponse<TaskResponseCreateDto>> createTask(@RequestBody TaskCreateDto dto) throws TaskCreateValiditionException {
         TaskResponseCreateDto responseDto = taskService.createTask(dto);
         return ResponseEntity.ok(BaseResponse.success("New Task Created Successfuly",responseDto));
     }

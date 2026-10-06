@@ -9,6 +9,7 @@ import uz.task_todo.app.dto.task.TaskCreateDto;
 import uz.task_todo.app.dto.task.TaskResponseCreateDto;
 import uz.task_todo.app.dto.task.TaskResponseDto;
 import uz.task_todo.app.dto.task.TaskUpdateDto;
+import uz.task_todo.app.exceptions.TaskCreateValiditionException;
 import uz.task_todo.app.models.Task;
 import uz.task_todo.app.models.Users;
 import uz.task_todo.app.models.enums.TaskStatus;
@@ -27,7 +28,7 @@ public class TaskService {
     private final UserDao userDao;
     private final TaskHistoryService taskHistoryService;
 
-    public TaskResponseCreateDto createTask(TaskCreateDto dto) {
+    public TaskResponseCreateDto createTask(TaskCreateDto dto) throws TaskCreateValiditionException {
         taskValidation.validateCreateTaskParametrs(dto);
         Task entity = taskMapper.toEntity(dto);
         Task rs = taskDao.save(entity);

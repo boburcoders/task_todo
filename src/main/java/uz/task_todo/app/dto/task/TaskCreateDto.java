@@ -7,7 +7,6 @@ public record TaskCreateDto(
         String desc,
         String status,
         Long userId,
-        LocalDateTime deadline,
-        Long ownerId
+        LocalDateTime deadline
 ) {
 }
