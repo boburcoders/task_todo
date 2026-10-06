@@ -6,5 +6,6 @@ import uz.task_todo.app.dto.task.TaskCreateDto;
 @Component
 public class TaskValidation {
     public void validateCreateTaskParametrs(TaskCreateDto dto) {
+
     }
 }
