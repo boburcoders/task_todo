@@ -1,5 +1,6 @@
 package uz.task_todo.app.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("/create-task")
-    public ResponseEntity<BaseResponse<TaskResponseCreateDto>> createTask(@RequestBody TaskCreateDto dto) throws TaskCreateValiditionException {
+    public ResponseEntity<BaseResponse<TaskResponseCreateDto>> createTask(@RequestBody @Valid TaskCreateDto dto) throws TaskCreateValiditionException {
         TaskResponseCreateDto responseDto = taskService.createTask(dto);
         return ResponseEntity.ok(BaseResponse.success("New Task Created Successfuly",responseDto));
     }

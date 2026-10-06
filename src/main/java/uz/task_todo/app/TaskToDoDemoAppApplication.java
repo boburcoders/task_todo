@@ -11,4 +11,15 @@ public class TaskToDoDemoAppApplication {
 		SpringApplication.run(TaskToDoDemoAppApplication.class, args);
 	}
 
+	/*
+	* Authentication-> bu user bizda bormi, (username, password), (jwt token), (acces key)
+	*  Authorization-> shu resource huquqi bormi
+	*
+	* Spring Security -> 17 filter, SecurityFilterChain,
+	* client -> delegatingFilterProxy -> SpringSecurity(SecurityFilterChain) -> DispatcherServlet-> Controller
+	*SecurityContextHolder -> current user malumotlarini saqlaydi,
+	* currentUser ->
+	*
+	* */
+
 }

@@ -26,4 +26,12 @@ public class GlobalExceptionHandling {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    @ExceptionHandler(UserNotPassedValidationException.class)
+    public ResponseEntity<BaseResponse<Void>> handleUserNotPassedValidationExceptionException(UserNotPassedValidationException exception) {
+        BaseResponse<Void>
+                error = BaseResponse.error(exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
 }

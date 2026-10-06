@@ -1,6 +1,7 @@
 package uz.task_todo.app.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.task_todo.app.dao.UserDao;
 import uz.task_todo.app.dto.user.*;
@@ -18,17 +19,18 @@ public class UserService {
     private final UserDao userDao;
     private final UserMapper userMapper;
     private final UserValidation userValidation;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponseCreateDto createUser(UserCreateDto dto) throws UserCreateOrUpdateException {
-        userValidation.validateUserCreateRequest(dto);
+//        userValidation.validateUserCreateRequest(dto);
         Users entity = userMapper.toEntity(dto);
         try {
-
+            entity.setPassword(passwordEncoder.encode(dto.password()));
+            entity.setDeleted(false);
             Users saveId = userDao.save(entity);
-            UserResponseCreateDto responseCreateDto = new UserResponseCreateDto(saveId.getId());
-            return responseCreateDto;
-        } catch (Exception e){
-            throw new UserCreateOrUpdateException("Error in Creating New User. "+dto.email());
+            return new UserResponseCreateDto(saveId.getId());
+        } catch (Exception e) {
+            throw new UserCreateOrUpdateException("Error in Creating New User. " + dto.email());
         }
     }
 
@@ -46,14 +48,14 @@ public class UserService {
             List<Users> userAll = userDao.findAll();
             List<UserShortInfo> userShortInfo = userAll.stream().map(userMapper::toDtoForShortInfo).toList();
             return userShortInfo;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new UserNotFoundException("An unknown error occurred while returing all users. ");
         }
     }
 
     public Long updateUserById(Long userId, UserUpdateRequestDto dto) {
         if (!userDao.existsById(userId)) {
-            throw new UserNotFoundException("User Not found by userId : "+userId);
+            throw new UserNotFoundException("User Not found by userId : " + userId);
         }
         Users user = userDao.findByUserId(userId);
         Users updatedUser = userMapper.toUpdateuser(user, dto);
@@ -64,7 +66,7 @@ public class UserService {
 
     public Boolean deleteUserById(Long userId) {
         if (!userDao.existsById(userId)) {
-            throw new UserNotFoundException("User Not found by userId : "+userId);
+            throw new UserNotFoundException("User Not found by userId : " + userId);
         }
         userDao.deleteById(userId);
         return true;
@@ -72,11 +74,11 @@ public class UserService {
 
     public Boolean updatePassword(Long userId, String oldPassword, String newPassword) {
         if (!userDao.existsById(userId)) {
-            throw new UserNotFoundException("User Not found by userId : "+userId);
+            throw new UserNotFoundException("User Not found by userId : " + userId);
         }
         Users user = userDao.findByUserId(userId);
 
-        if (!user.getPassword().equals(oldPassword)){
+        if (!user.getPassword().equals(oldPassword)) {
             throw new UserNotFoundException("Old Password is not correct, please try again");
         }
 

@@ -50,7 +50,7 @@ public class UserMapper {
                 entity.getLastname(),
                 entity.getEmail(),
                 entity.getPhone(),
-                entity.getPhone(),
+                entity.getRole().name(),
                 entity.getCreatedAt()
         );
         return userResponseDto;

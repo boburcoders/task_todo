@@ -21,7 +21,7 @@ public class UserController {
     //@PreAutharize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<UserResponseCreateDto>> createUser(@RequestBody @Valid UserCreateDto dto) throws UserCreateOrUpdateException {
         UserResponseCreateDto id = userService.createUser(dto);
-        return ResponseEntity.ok(BaseResponse.success("User Created Successfully",id));
+        return ResponseEntity.ok(BaseResponse.success("User Created Successfully", id));
     }
 
     @GetMapping("/get-byId/{id}")
@@ -35,7 +35,7 @@ public class UserController {
     @GetMapping("/get-all")
     public ResponseEntity<BaseResponse<List<UserShortInfo>>> getAllUserWithShortInfo() {
         List<UserShortInfo> resList = userService.getAllUserWithShortInfo();
-        return ResponseEntity.ok(BaseResponse.success("All user Find Successfully",resList));
+        return ResponseEntity.ok(BaseResponse.success("All user Find Successfully", resList));
     }
 
     @PutMapping("/update-byId/{id}")
@@ -45,7 +45,7 @@ public class UserController {
 
         Long id = userService.updateUserById(userId, dto);
 
-        return ResponseEntity.ok(BaseResponse.success("User Updated Successfully",id));
+        return ResponseEntity.ok(BaseResponse.success("User Updated Successfully", id));
     }
 
     @PutMapping("/update-password-byId/{id}")
@@ -55,7 +55,7 @@ public class UserController {
             @RequestParam String newPassword) {
 
         Boolean updated = userService.updatePassword(userId, oldPassword, newPassword);
-        return ResponseEntity.ok(BaseResponse.success("Password Updated Successfully",updated));
+        return ResponseEntity.ok(BaseResponse.success("Password Updated Successfully", updated));
     }
 
     @PutMapping("/delete-byId/{id}")
